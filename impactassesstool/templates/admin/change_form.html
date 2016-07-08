@@ -54,6 +54,7 @@
 	{% if user|has_group:"Staff Admin" %}
 		<li><a href="{% url 'admin:index' %}impactassessapp/">App Admin</a></li>
 	{% endif %}
+	<li><a href="{% url 'admin:index' %}impactassessapp/organization/">Organizations</a></li>
 </ul>
 {% endblock %}
 {% endif %}

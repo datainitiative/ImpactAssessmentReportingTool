@@ -26,6 +26,7 @@ admin.site.register(InvestmentCategory,InvestmentCategoryAdmin)
 class InvestmentTypeAdmin(admin.ModelAdmin):
     fields = ['name','category']
     list_display = ['name','category']
+    list_filter = ['category']
 admin.site.register(InvestmentType,InvestmentTypeAdmin)
 
 class GeographyAdmin(admin.ModelAdmin):

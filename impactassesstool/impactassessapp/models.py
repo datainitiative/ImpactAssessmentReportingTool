@@ -344,6 +344,7 @@ class Organization(models.Model):
 			return "%s (%s)" % (self.org_stage.name if self.org_stage else "", self.org_stage_note)
 		else:
 			return "%s" % self.org_stage.name if self.org_stage else ""
+	_get_str_org_stage.short_description = "Organization Stage"
 				
 	class Meta:
 		db_table = u'organization'
