@@ -1,0 +1,11 @@
+{% extends "admin/base.html" %}
+{% load custom_filter %}{% load custom_tag %}
+{% block title %}{{ title }} | Impact Assessment Reporting Tool{% endblock %}
+{% block extrahead %}
+
+{% endblock %}
+{% block branding %}
+<h1 id="site-name"><a href="{% setting 'ADMIN_ROOT_URL' %}/admin/impactassessapp/investment/">Impact Assessment Reporting Tool</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
