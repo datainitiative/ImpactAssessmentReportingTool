@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.template import RequestContext
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.models import Group
@@ -10,10 +11,86 @@ from django.contrib.auth.models import Group
 from util import *
 
 # Import from app
-from impactassesstool.settings import ROOT_APP_URL, STORAGE_ROOTPATH, STATIC_URL
+from impactassesstool.settings import ADMIN_ROOT_URL, ROOT_APP_URL, STORAGE_ROOTPATH, STATIC_URL
 from impactassessapp.models import *
 from impactassessapp.forms import *
 
+'''-----------------------
+User functions
+-----------------------'''   
+# Register
+@render_to("impactassessapp/register.html")
+def register(request):
+    if request.method == 'POST':
+        signup_form = UserCreationForm(request.POST)
+        if signup_form.is_valid():
+            new_user = signup_form.save()
+            user = authenticate(username=signup_form.cleaned_data["username"], password=signup_form.cleaned_data["password2"])
+            login(request, user)
+            if "next" in request.GET:
+                app_name = request.GET["next"].replace(APP_SERVER_URL,"").partition("/")[2].partition("/")[0]
+                return HttpResponseRedirect(request.GET["next"])
+            else:
+                url = request.META["HTTP_REFERER"]
+                if url.partition("/?next=/")[1] == "":
+                    if APP_SERVER_URL == "":
+                        # a trick for localhost
+                        app_name = url.partition("http://")[2].replace(SERVER_URL,"").partition("/")[2].partition("/")[0]
+                    else:
+                        app_name = url.partition("http://")[2].replace(SERVER_URL,"").replace(APP_SERVER_URL,"").partition("/")[2].partition("/")[0]
+                else:
+                    app_name = url.partition("/?next=/")[2].partition("/")[0]
+                return HttpResponseRedirect('%s/admin/%s/investment/' % (ROOT_APP_URL,app_name))            
+        else:
+            error_msg = "Please check your register information."
+            return {'title':"Sign up",'error_msg':error_msg,'signup_form':signup_form}
+    else:
+        signup_form = UserCreationForm()
+    return {'title':"Sign up",'signup_form':signup_form}
+
+
+# User Profile
+@login_required
+@render_to("impactassessapp/user_profile.html")
+def user_profile(request):
+    user = request.user
+    if request.method == 'GET':
+        user_profile_form = UserProfileForm(instance=user)
+    elif request.method == 'POST':
+        user_profile_form = UserProfileForm(data=request.POST, instance=user)
+        if user_profile_form.is_valid():
+            user_profile_form.save()
+            messages.info(request, "User profile was changed successfully.")
+            if 'save' in request.POST:
+                if "next" in request.GET:
+                    #app_name = request.GET["next"].replace(APP_SERVER_URL,"").partition("/")[2].partition("/")[0]
+                    return HttpResponseRedirect(request.GET["next"])
+                else:
+                    return HttpResponseRedirect('%s/admin/impactassessapp/investment/' % ADMIN_ROOT_URL)
+        else:
+            messages.error(request, "Please correct the errors below.")
+    return {'user_name':user.username,'user_profile_form':user_profile_form}
+
+# User Change Password
+@login_required
+@render_to("impactassessapp/user_password.html")
+def user_change_password(request):
+    user = request.user
+    if request.method == 'GET':
+        user_password_form = PasswordChangeForm(user)
+    elif request.method == 'POST':
+        user_password_form = PasswordChangeForm(user,request.POST)
+        if user_password_form.is_valid():
+            user_password_form.save()
+            messages.info(request, "User password was changed successfully.")
+            return HttpResponseRedirect('%s/user/profile/' % ROOT_APP_URL)
+        else:
+            messages.error(request, "Please correct the errors below.")
+    return {'user_name':user.username,'user_password_form':user_password_form}
+
+'''-----------------------
+Main Functions
+-----------------------'''
 # Home page
 @login_required
 @render_to("impactassessapp/home.html")

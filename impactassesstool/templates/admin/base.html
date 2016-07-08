@@ -143,6 +143,7 @@
 								{% if user|has_group:"Superuser" %}
 									<li><a href="{% setting 'ADMIN_ROOT_URL' %}/admin/"><i class="fa fa-gear"></i> Administration</a></li>
 								{% endif %}
+								<li><a href="{% setting 'ROOT_APP_URL' %}/user/profile"><i class="fa fa-user"></i> {% trans 'User Profile' %}</a></li>
                                 <li><a href="{% url 'admin:logout' %}"><i class="fa fa-sign-out"></i> {% trans 'Sign Out' %}</a></li>
                             </ul>
                         </li>

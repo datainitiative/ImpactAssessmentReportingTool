@@ -23,9 +23,9 @@ urlpatterns = patterns('impactassessapp.views',
 	url(r'^import/is_indicator_met/$','import_is_indicator_met'),
 	url(r'^import/investment/$','import_investment'),
 
-#	# Login,Logout,Register,User
-#	url(r'^logout/$',logout,{'template_name': 'registration/logged_out.html'}),
-#	url(r'^register/$','register'),
-#	url(r'^user/profile/$','user_profile'),
-#	url(r'^user/password/$','user_change_password'),
+	# Login,Logout,Register,User
+	url(r'^logout/$',logout,{'template_name': 'registration/logged_out.html'}),
+	url(r'^register/$','register'),
+	url(r'^user/profile/$','user_profile'),
+	url(r'^user/password/$','user_change_password'),
 )
