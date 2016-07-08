@@ -9,5 +9,5 @@
 <br/>
 <h3>{% trans "Thanks for spending some quality time with the Impact Assessment Reporting Tool today." %}</h3>
 <br/><br/>
-<a href="{% url 'admin:index' %}login/?next={% setting 'ROOT_APP_URL' %}/home/" class="btn btn-outline btn-success btn-lg"><i class="fa fa-sign-in"></i> {% trans 'Log in again' %}</a>
+<a href="{% url 'admin:index' %}login/?next={% setting 'ADMIN_ROOT_URL' %}/admin/impactassessapp/investment/" class="btn btn-outline btn-success btn-lg"><i class="fa fa-sign-in"></i> {% trans 'Log in again' %}</a>
 {% endblock %}
