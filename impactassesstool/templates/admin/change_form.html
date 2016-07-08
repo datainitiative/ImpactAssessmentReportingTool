@@ -52,7 +52,7 @@
 		<li><a href="{% url 'admin:index' %}">{% trans 'Superuser Admin Home' %}</a></li>
 	{% endif %}
 	{% if user|has_group:"Staff Admin" %}
-		<li><a href="{% url 'admin:index' %}geocodingapp/">App Admin</a></li>
+		<li><a href="{% url 'admin:index' %}impactassessapp/">App Admin</a></li>
 	{% endif %}
 </ul>
 {% endblock %}
