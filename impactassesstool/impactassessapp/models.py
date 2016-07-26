@@ -283,7 +283,7 @@ class ExternalEvaluation(models.Model):
 class IndexOfReflectiveReporting(models.Model):
 #	id = models.IntegerField(primary_key=True)
 	index = models.IntegerField(default=-1)
-	description = models.CharField(max_length=200)
+	description = models.TextField(max_length=200)
 
 	def __unicode__(self):
 		return unicode(self.index)
@@ -310,7 +310,7 @@ class IndexOfReflectiveReporting(models.Model):
 class IndexOfQuantitativeReporting(models.Model):
 #	id = models.IntegerField(primary_key=True)
 	index = models.IntegerField(default=-1)
-	description = models.CharField(max_length=200)
+	description = models.TextField(max_length=200)
 
 	def __unicode__(self):
 		return unicode(self.index)
@@ -624,3 +624,4 @@ class Codebook(models.Model):
 	
 	class Meta:
 		db_table = u'codebook'
+		ordering = ['id']
