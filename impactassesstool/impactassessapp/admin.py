@@ -39,10 +39,35 @@ class ThematicAreaAdmin(admin.ModelAdmin):
     list_display = ['name']
 admin.site.register(ThematicArea,ThematicAreaAdmin)
 
+class CostEffectivenessAdmin(admin.ModelAdmin):
+    fields = ['name']
+    list_display = ['name']
+admin.site.register(CostEffectiveness,CostEffectivenessAdmin)
+
+class BeneficiaryVsOrganizationalImpactAdmin(admin.ModelAdmin):
+    fields = ['name']
+    list_display = ['name']
+admin.site.register(BeneficiaryVsOrganizationalImpact,BeneficiaryVsOrganizationalImpactAdmin)
+
 class BeneficiaryLevelIndicatorAdmin(admin.ModelAdmin):
     fields = ['name','organization']
     list_display = ['name','organization']
 admin.site.register(BeneficiaryLevelIndicator,BeneficiaryLevelIndicatorAdmin)
+
+class ExternalEvaluationAdmin(admin.ModelAdmin):
+    fields = ['name']
+    list_display = ['name']
+admin.site.register(ExternalEvaluation,ExternalEvaluationAdmin)
+
+class IndexOfReflectiveReportingAdmin(admin.ModelAdmin):
+    fields = ['index','description']
+    list_display = ['index','description']
+admin.site.register(IndexOfReflectiveReporting,IndexOfReflectiveReportingAdmin)
+
+class IndexOfQuantitativeReportingAdmin(admin.ModelAdmin):
+    fields = ['index','description']
+    list_display = ['index','description']
+admin.site.register(IndexOfQuantitativeReporting,IndexOfQuantitativeReportingAdmin)
 
 class MECapacityAdmin(admin.ModelAdmin):
     fields = ['name']
@@ -74,14 +99,24 @@ admin.site.register(ReportDueDate,ReportDueDateAdmin)
 class InvestmentAdmin(admin.ModelAdmin):
     fields = ['organization','date_of_award','report_due_date','report_status',
               'amount','amount_note','investment_type','geography','geography_note',
-              'thematic_area','cost_effectiveness',
+              'thematic_area',
+              'cost_effectiveness',
               'beneficiary_level_indicator',
               'organization_level_indicator',
+              'beneficiary_vs_organizational_impact',
+              'summary_of_data_reported',
+              'collaborations',
+              'external_evaluation',
+              'index_of_reflective_reporting',
+              'index_of_quantitative_reporting',
+              'lessons_learned',
               'me_capacity','me_capacity_note','is_indicator_met',
               'recommended_indicator','notes']
+    filter_horizontal = ['report_due_date','investment_type','thematic_area']
     list_display = ['organization','date_of_award','_get_str_all_report_due_dates','report_status',
                     'amount','_get_str_all_investment_types','geography',
-                    'thematic_area','cost_effectiveness',
+                    '_get_str_all_thematic_areas',
+                    'cost_effectiveness',
                     'me_capacity','is_indicator_met',] 
 #    list_display = ['organization','date_of_award','_get_str_all_report_due_dates','report_status',
 #                    'amount','amount_note','_get_str_all_investment_types','geography','geography_note',
@@ -94,3 +129,12 @@ class InvestmentAdmin(admin.ModelAdmin):
                     'me_capacity','is_indicator_met',]
     actions = ['delete_selected']
 admin.site.register(Investment,InvestmentAdmin)
+
+class CodebookAdmin(admin.ModelAdmin):
+    fields = ['field_name','description','source','comments','data_type_for_database','notes_on_initial_database','model_name']
+    readonly_fields = ['model_name']
+    list_display = ['field_name','description','source','comments','data_type_for_database','notes_on_initial_database','_url_list_all','_url_add_new']
+    search_fields = ['field_name','description','source','comments','data_type_for_database','notes_on_initial_database','model_name']
+admin.site.register(Codebook,CodebookAdmin)
+
+

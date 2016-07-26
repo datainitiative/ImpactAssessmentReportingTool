@@ -10,7 +10,11 @@ urlpatterns = patterns('impactassessapp.views',
 	# Home page URL
 	url(r'^home/$','home'),
 	
+	# Other pages
+	url(r'^codebook/$','codebook'),
+	
 	# Import data URLs
+	url(r'^import/codebook/$','import_codebook'),
 	url(r'^import/org_stage/$','import_organization_stage'),
 	url(r'^import/organization/$','import_organization'),
 	url(r'^import/report_due_type/$','import_report_due_type'),

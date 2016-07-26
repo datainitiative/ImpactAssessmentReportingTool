@@ -1,4 +1,5 @@
 from django.db import models
+from impactassesstool.settings import ADMIN_ROOT_URL
 
 # Import from general utilities
 from util import *
@@ -200,6 +201,138 @@ class ThematicArea(models.Model):
 
 	class Meta:
 		db_table = u'thematic_area'
+		
+class CostEffectiveness(models.Model):
+#	id = models.IntegerField(primary_key=True)
+	name = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return unicode(self.name)
+	
+	def previous(self):
+		try:
+			previous_records = CostEffectiveness.objects.filter(id__lt=self.id)
+			previous_id = previous_records.order_by('-id')[0].id
+			return CostEffectiveness.objects.get(id=previous_id)
+		except:
+			return None
+		
+	def next(self):
+		try:
+			next_records = CostEffectiveness.objects.filter(id__gt=self.id)
+			next_id = next_records.order_by('id')[0].id
+			return CostEffectiveness.objects.get(id=next_id)
+		except:
+			return None	
+
+	class Meta:
+		db_table = u'cost_effectiveness'
+
+class BeneficiaryVsOrganizationalImpact(models.Model):
+#	id = models.IntegerField(primary_key=True)
+	name = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return unicode(self.name)
+	
+	def previous(self):
+		try:
+			previous_records = BeneficiaryVsOrganizationalImpact.objects.filter(id__lt=self.id)
+			previous_id = previous_records.order_by('-id')[0].id
+			return BeneficiaryVsOrganizationalImpact.objects.get(id=previous_id)
+		except:
+			return None
+		
+	def next(self):
+		try:
+			next_records = BeneficiaryVsOrganizationalImpact.objects.filter(id__gt=self.id)
+			next_id = next_records.order_by('id')[0].id
+			return BeneficiaryVsOrganizationalImpact.objects.get(id=next_id)
+		except:
+			return None	
+
+	class Meta:
+		db_table = u'beneficiary_vs_organizational_impact'
+		
+class ExternalEvaluation(models.Model):
+#	id = models.IntegerField(primary_key=True)
+	name = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return unicode(self.name)
+	
+	def previous(self):
+		try:
+			previous_records = ExternalEvaluation.objects.filter(id__lt=self.id)
+			previous_id = previous_records.order_by('-id')[0].id
+			return ExternalEvaluation.objects.get(id=previous_id)
+		except:
+			return None
+		
+	def next(self):
+		try:
+			next_records = ExternalEvaluation.objects.filter(id__gt=self.id)
+			next_id = next_records.order_by('id')[0].id
+			return ExternalEvaluation.objects.get(id=next_id)
+		except:
+			return None	
+
+	class Meta:
+		db_table = u'external_evaluation'
+		
+class IndexOfReflectiveReporting(models.Model):
+#	id = models.IntegerField(primary_key=True)
+	index = models.IntegerField(default=-1)
+	description = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return unicode(self.index)
+	
+	def previous(self):
+		try:
+			previous_records = IndexOfReflectiveReporting.objects.filter(id__lt=self.id)
+			previous_id = previous_records.order_by('-id')[0].id
+			return IndexOfReflectiveReporting.objects.get(id=previous_id)
+		except:
+			return None
+		
+	def next(self):
+		try:
+			next_records = IndexOfReflectiveReporting.objects.filter(id__gt=self.id)
+			next_id = next_records.order_by('id')[0].id
+			return IndexOfReflectiveReporting.objects.get(id=next_id)
+		except:
+			return None	
+
+	class Meta:
+		db_table = u'index_of_reflective_reporting'
+		
+class IndexOfQuantitativeReporting(models.Model):
+#	id = models.IntegerField(primary_key=True)
+	index = models.IntegerField(default=-1)
+	description = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return unicode(self.index)
+	
+	def previous(self):
+		try:
+			previous_records = IndexOfQuantitativeReporting.objects.filter(id__lt=self.id)
+			previous_id = previous_records.order_by('-id')[0].id
+			return IndexOfQuantitativeReporting.objects.get(id=previous_id)
+		except:
+			return None
+		
+	def next(self):
+		try:
+			next_records = IndexOfQuantitativeReporting.objects.filter(id__gt=self.id)
+			next_id = next_records.order_by('id')[0].id
+			return IndexOfQuantitativeReporting.objects.get(id=next_id)
+		except:
+			return None	
+
+	class Meta:
+		db_table = u'index_of_quantitative_reporting'
 
 # Beneficiary Level Indicator
 class BeneficiaryLevelIndicator(models.Model):
@@ -372,17 +505,24 @@ class Investment(models.Model):
 	investment_type = models.ManyToManyField('InvestmentType')
 	geography = models.ForeignKey('Geography', null=True)
 	geography_note = models.CharField(max_length=200, blank=True, null=True)
-	thematic_area = models.ForeignKey('ThematicArea', null=True)
-	cost_effectiveness = models.CharField(max_length=500, blank=True, null=True)
+	thematic_area = models.ManyToManyField('ThematicArea')
+	cost_effectiveness = models.ForeignKey('CostEffectiveness', null=True)
 #	beneficiary_level_indicator = models.ManyToManyField('BeneficiaryLevelIndicator', null=True)
 #	organization_level_indicator = models.ManyToManyField('OrganizationLevelIndicator', null=True)
 	beneficiary_level_indicator = models.TextField(blank=True, null=True)
 	organization_level_indicator = models.TextField(blank=True, null=True)
+	beneficiary_vs_organizational_impact = models.ForeignKey('BeneficiaryVsOrganizationalImpact', null=True)
+	summary_of_data_reported = models.TextField(max_length=500, blank=True, null=True)
+	collaborations = models.TextField(max_length=500, blank=True, null=True)
+	external_evaluation = models.ForeignKey('ExternalEvaluation', null=True)
+	index_of_reflective_reporting = models.ForeignKey('IndexOfReflectiveReporting', null=True)
+	index_of_quantitative_reporting = models.ForeignKey('IndexOfQuantitativeReporting', null=True)
 	me_capacity = models.ForeignKey('MECapacity', null=True)
 	me_capacity_note = models.CharField(max_length=200, blank=True, null=True)
 	is_indicator_met = models.ForeignKey('IsIndicatorMet', null=True)
 	recommended_indicator = models.TextField(blank=True, null=True)
-	notes = models.TextField(blank=True, null=True)
+	lessons_learned = models.TextField(max_length=200, blank=True, null=True)
+	notes = models.TextField(verbose_name="Reporting comments and notes", blank=True, null=True)
 	
 	def __unicode__(self):
 			return str(self.id)
@@ -420,6 +560,67 @@ class Investment(models.Model):
 		display_investment_types = "\n".join(str_investment_types)
 		return display_investment_types
 	_get_str_all_investment_types.short_description = "Investment Type"
+	
+	def _get_str_all_thematic_areas(self):
+		thematic_areas = self.thematic_area.all()
+		str_thematic_areas = []
+		for ta in thematic_areas:
+			str_thematic_areas.append(ta.name)
+		display_thematic_areas = "\n".join(str_thematic_areas)
+		return display_thematic_areas
+	_get_str_all_thematic_areas.short_description = "Thematic Area"	
 				
 	class Meta:
 		db_table = u'investment'
+		
+class Codebook(models.Model):
+#	id = models.IntegerField(primary_key=True)
+	field_name = models.CharField(max_length=200, blank=True, null=True)
+	description = models.TextField(max_length=500, blank=True, null=True)
+	source = models.TextField(max_length=500, blank=True, null=True)
+	comments = models.TextField(max_length=500, blank=True, null=True)
+	data_type_for_database = models.CharField(max_length=200, blank=True, null=True)
+	notes_on_initial_database = models.TextField(max_length=500, blank=True, null=True)
+	model_name = models.CharField(max_length=200, blank=True, null=True)
+
+	def __unicode__(self):
+		return unicode(self.name)
+	
+	def previous(self):
+	    try:
+	        previous_records = Codebook.objects.filter(id__lt=self.id)
+	        previous_id = previous_records.order_by('-id')[0].id
+	        return Codebook.objects.get(id=previous_id)
+	    except:
+	        return None
+	    
+	def next(self):
+	    try:
+	        next_records = Codebook.objects.filter(id__gt=self.id)
+	        next_id = next_records.order_by('id')[0].id
+	        return Codebook.objects.get(id=next_id)
+	    except:
+	        return None
+		
+	def _url_list_all(self):
+		if self.model_name:
+			path = "%s/admin/impactassessapp/%s/" % (ADMIN_ROOT_URL,self.model_name)
+			url = '<a href="%s" target="_blank">View All</a>' % path
+		else:
+			url = ""
+		return url
+	_url_list_all.short_description = "View All"
+	_url_list_all.allow_tags = True
+	
+	def _url_add_new(self):
+		if self.model_name:
+			path = "%s/admin/impactassessapp/%s/add/" % (ADMIN_ROOT_URL,self.model_name)
+			url = '<a href="%s" target="_blank">Add New</a>' % path
+		else:
+			url = ""
+		return url
+	_url_add_new.short_description = "Add New"
+	_url_add_new.allow_tags = True	
+	
+	class Meta:
+		db_table = u'codebook'

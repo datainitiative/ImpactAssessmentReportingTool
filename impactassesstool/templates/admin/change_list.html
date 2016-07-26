@@ -66,9 +66,10 @@
 	<li><a href="{% setting 'ADMIN_ROOT_URL' %}/admin/impactassessapp/investment/">{% trans 'Home' %}</a></li>
 	{% if user|has_group:"Superuser" %}
 		<li><a href="{% url 'admin:index' %}">{% trans 'Superuser Admin Home' %}</a></li>
+		<li><a href="{% url 'admin:index' %}impactassessapp/">App Admin</a></li>
 	{% endif %}
 	{% if user|has_group:"Staff Admin" %}
-		<li><a href="{% url 'admin:index' %}impactassessapp/">App Admin</a></li>
+		<li><a href="{% url 'admin:index' %}impactassessapp/codebook/">Codebook</a></li>
 	{% endif %}
 	<li><a href="{% url 'admin:index' %}impactassessapp/organization/">Organizations</a></li>
 </ul>

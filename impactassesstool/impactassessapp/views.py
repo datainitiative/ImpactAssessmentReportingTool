@@ -99,6 +99,14 @@ def home(request):
         
     return {}
 
+# Codebook page
+@login_required
+@render_to("impactassessapp/codebook.html")
+def codebook(request):
+    print "Codebook Page"
+        
+    return {}
+
 
 # Import data functions
 ## Import Organization Stage
@@ -361,3 +369,26 @@ def import_investment(request):
     except Exception as e:
         print e
         return HttpResponse("Investments - Import Failed! Error: %s" % e)
+    
+## Codebook
+@login_required
+def import_codebook(request):
+    try:
+        with open(STORAGE_ROOTPATH+"ref_codebook.csv",'rb') as f:
+            reader = csv.reader(f)
+            for index,row in enumerate(reader):
+                if index > 0:
+                    codebook = Codebook(
+                        field_name = row[0].strip(),
+                        description = row[1].strip(),
+                        source = row[2].strip(),
+                        comments = row[3].strip(),
+                        data_type_for_database = row[4].strip(),
+                        notes_on_initial_database = row[5].strip(),
+                        model_name = row[6].strip().lower() if len(row) > 6 else None,
+                    )
+                    codebook.save()
+        return HttpResponse("Codebook - Import complete!")
+    except Exception as e:
+        print e
+        return HttpResponse("Codebook - Import Failed! Error: %s" % e)
